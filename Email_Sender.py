@@ -20,22 +20,27 @@ with open(email_csv) as file:
                 recievers.append(email)
         recievers = flatten(recievers)
 
-smtp_server = 'smtp-mail.outlook.com'
-smtp_port = 587
+email = input("write your email address: ")
+password =  input("write your password: ")
 
-email = 'jamal.nzal@hotmail.com'
-password = input("write your password: ")
+if email.split('@')[1].split('.')[0] in ['hotmail', 'live', 'outlook']:
+    smtp_server = 'smtp-mail.outlook.com'
+elif email.split('@')[1].split('.')[0] == 'gmail':
+    smtp_server = 'smtp.gmail.com'
+smtp_port = 587
 
 attachmentPath = input("attachment path")
 
+name = input('write your name in the From box')
+
 for x in recievers:
         message = MIMEMultipart('mixed')
-        message['From'] = 'Jamal Nazzal  <{sender}>'.format(sender = email)
+        message['From'] = f'{name.title()}  <{email}>'
         message['Subject'] = 'My CV'
         message['To'] = str(x)#.join(reciever)
         reciever = str(x)
 
-        msg_content = '<p>Hello Dear,<br> Kindly find my C.V. in attachments. <br>I hope to get the opportunity to serve your company.<br>Best Regards,<br> Jamal</p>\n'
+        msg_content = f'<p>Hello Dear,<br> Kindly find my C.V. in attachments. <br>I hope to get an opportunity to work by your company.<br>Best Regards,<br> {name.split()[0].capitalize()}.</p>\n'
         body = MIMEText(msg_content, 'html')
         message.attach(body)
 
